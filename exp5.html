@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Bill Calculator</title>
+  <img src="C:\Users\Bharath Kumar\Desktop\webtechnology work space\New folder\rest.jpg" alt="image">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Center align content */
+  position: relative; /* Set position to relative */
+}
+
+.image-container {
+  margin-bottom: 20px; /* Add margin below the image */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Make image behave like a block element */
+  margin: 0 auto; /* Center align the image horizontally */
+}
+
+h1 {
+  color: #333;
+}
+
+h2 {
+  color: #555;
+}
+
+
+    .menu-item {
+      margin-bottom: 15px;
+    }
+
+    .checkbox {
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #total {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+    .heading {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .main-dish-container,
+    .drinks-container,
+    .snacks-container {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .main-dish-container label,
+    .drinks-container label,
+    .snacks-container label {
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Restaurant Bill Calculator</h1>
+    <h2>Menu</h2>
+    <div class="main-dish-container">
+      <h3 class="heading">Main Dish</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="dosa" class="checkbox" data-price="50.25">
+        <label for="dosa">Dosa - ₹50.25</label>
+        <input type="number" id="dosa-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="grilled-chicken" class="checkbox" data-price="600.25">
+        <label for="grilled-chicken">Grilled Chicken - ₹600.25</label>
+        <input type="number" id="grilled-chicken-quantity" class="quantity" value
+        
+        
+        
+        ="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="chicken-rice" class="checkbox" data-price="150.25">
+        <label for="chicken-rice">Chicken Rice - ₹150.25</label>
+        <input type="number" id="chicken-rice-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <div class="drinks-container">
+      <h3 class="heading">Drinks</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="apple-juice" class="checkbox" data-price="70.50">
+        <label for="apple-juice">Apple Juice - ₹70.50</label>
+        <input type="number" id="apple-juice-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="fruit-mix" class="checkbox" data-price="80.25">
+        <label for="fruit-mix">Fruit Mix - ₹80.25</label>
+        <input type="number" id="fruit-mix-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="chocolate-coffee" class="checkbox" data-price="50.75">
+        <label for="chocolate-coffee">Chocolate Coffee - ₹50.75</label>
+        <input type="number" id="chocolate-coffee-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <div class="snacks-container">
+      <h3 class="heading">Snacks</h3>
+      <div class="menu-item">
+        <input type="checkbox" id="biscuits" class="checkbox" data-price="50.50">
+        <label for="biscuits">Biscuits - ₹50.50</label>
+        <input type="number" id="biscuits-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="french-fries" class="checkbox" data-price="100.75">
+        <label for="french-fries">French Fries - ₹100.75</label>
+        <input type="number" id="french-fries-quantity" class="quantity" value="1" min="1">
+      </div>
+      <div class="menu-item">
+        <input type="checkbox" id="cake" class="checkbox" data-price="400.50">
+        <label for="cake">Cake - ₹400.50</label>
+        <input type="number" id="cake-quantity" class="quantity" value="1" min="1">
+      </div>
+    </div>
+    <button id="clear-order">Clear Order</button>
+    <button id="add-item">Add Item</button>
+    <button id="view-bill">View Bill</button>
+    <div id="total"></div>
+  </div>
+
+  <script>
+    let bill = 0;
+    let selectedItems = [];
+
+    document.querySelectorAll('.checkbox').forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        const price = parseFloat(this.dataset.price);
+        const quantity = parseInt(this.nextElementSibling.nextElementSibling.value); // Get the value of the quantity input
+        if (this.checked) {
+          bill += price * quantity;
+          selectedItems.push({ name: this.id, price: price, quantity: quantity });
+        } else {
+          bill -= price * quantity;
+          selectedItems = selectedItems.filter(item => item.name !== this.id);
+        }
+      });
+    });
+
+    document.getElementById('clear-order').addEventListener('click', function() {
+      document.querySelectorAll('.checkbox').forEach(function(checkbox) {
+        checkbox.checked = false;
+      });
+      document.querySelectorAll('.quantity').forEach(function(quantityInput) {
+        quantityInput.value = "1"; 
+      });
+      bill = 0;
+      selectedItems = [];
+      document.getElementById('total').innerText = "";
+    });
+
+    document.getElementById('add-item').addEventListener('click', function() {
+      const selectedItem = document.querySelector('input[name="item"]:checked');
+      if (selectedItem) {
+        const itemName = selectedItem.value;
+        const itemPrice = parseFloat(selectedItem.dataset.price);
+        const itemQuantity = parseInt(selectedItem.nextElementSibling.value);
+        bill += itemPrice * itemQuantity;
+        selectedItems.push({ name: itemName, price: itemPrice, quantity: itemQuantity });
+      } else {
+        alert("Please select an item to add.");
+      }
+    });
+
+    document.getElementById('view-bill').addEventListener('click', function() {
+      const totalElement = document.getElementById('total');
+      totalElement.innerHTML = `Total Bill: ₹${bill.toFixed(2)}`;
+
+      // Print selected items
+      console.log("Selected Items:");
+      selectedItems.forEach(function(item) {
+        console.log(`${item.name} - Quantity: ${item.quantity}, Price: ₹${(item.price * item.quantity).toFixed(2)}`);
+      });
+    });
+  </script>
+</body>
+</html>
